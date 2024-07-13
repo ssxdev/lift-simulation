@@ -1,0 +1,93 @@
+/* index.html */
+.html {
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #e2e8f0;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#main-content {
+  background-color: #f8fafc;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+/* instructions.html */
+#instructions-section {
+  font-size: 1.5rem;
+  color: #212121;
+}
+
+#instructions-section h1 {
+  margin: 1rem;
+  text-decoration: underline;
+}
+
+#instructions-list {
+  color: #424242;
+}
+
+#instructions-list li {
+  margin-bottom: 0.5rem;
+}
+
+#lift-system-inputs {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+#lift-system-inputs div {
+  display: flex;
+  flex-direction: column;
+}
+
+#lift-system-inputs label {
+  margin-bottom: 0.5rem;
+}
+
+#lift-system-inputs input {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+#lift-system-form button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: #2b6cb0;
+  color: #f8fafc;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#lift-system-form button:hover {
+  background-color: #2c5282;
+}
+
+/* lift-simulation.html */
+#lift-simulation-section {
+  font-size: 1.5rem;
+  color: #212121;
+}
+
+#lift-simulation-section h1 {
+  margin: 1rem;
+  text-decoration: underline;
+}
