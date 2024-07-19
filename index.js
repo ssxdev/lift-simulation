@@ -87,8 +87,16 @@ function generateBuilding(totalFloors, totalLifts) {
           <div class="floor-lift-control-screen-down">v</div>
         </div>
         <div class="floor-lift-control-button">
-          <button class="floor-lift-control-button-up">Up</button>
-          <button class="floor-lift-control-button-down">Down</button>
+        ${
+          floor !== totalFloors
+            ? `<button class="floor-lift-control-button-up" data-floor=${floor} data-direction="up">Up</button>`
+            : ""
+        }
+        ${
+          floor !== 0
+            ? `<button class="floor-lift-control-button-down" data-floor=${floor} data-direction="down">Down</button>`
+            : ""
+        }
         </div>
       </div>`;
 
@@ -101,6 +109,20 @@ function generateBuilding(totalFloors, totalLifts) {
     for (let lift = 0; lift < totalLifts; lift++) {
       const floorLiftDiv = document.createElement("div");
       floorLiftDiv.className = "floor-lift";
+      if (floor === 0) {
+        floorLiftDiv.innerHTML = `
+        <div class="lift">
+            <div class="lift-door-screen">
+                <div class="lift-door-screen-up">^</div>
+                <div class="lift-door-screen-text">0</div>
+                <div class="lift-door-screen-down">v</div>
+            </div>
+            <div class="lift-door">
+                <div class="lift-door-left"></div>
+                <div class="lift-door-right"></div>
+            </div>
+        </div>`;
+      }
       floorLiftsDiv.appendChild(floorLiftDiv);
     }
 

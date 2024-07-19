@@ -123,6 +123,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 5px;
+  width: 5rem;
   background-color: #eeeee4;
 }
 
@@ -134,6 +135,10 @@ body {
   background-color: #2596be;
   width: 100%;
   justify-content: space-evenly;
+}
+
+.floor-lift-control-button {
+  width: 100%;
 }
 
 .floor-lift-control-button button {
@@ -163,6 +168,7 @@ body {
 }
 
 .lift {
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
