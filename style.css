@@ -125,6 +125,7 @@ body {
   padding: 5px;
   width: 5rem;
   background-color: #eeeee4;
+  gap: 5px;
 }
 
 .floor-lift-control-screen {
@@ -138,16 +139,18 @@ body {
 }
 
 .floor-lift-control-button {
-  width: 100%;
-}
-
-.floor-lift-control-button button {
   padding: 5px;
   border-radius: 5px;
   background-color: gray;
   cursor: pointer;
   width: 100%;
   color: white;
+  transition: background-color 0.3s;
+}
+
+.floor-lift-control-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .floor-lifts {
@@ -168,15 +171,39 @@ body {
 }
 
 .lift {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #eeeee4;
   border-radius: 5px;
   height: 100px;
   width: 100px;
+  transition: transform 0s;
+  background-color: #eeeee4;
+  position: absolute;
+  overflow: hidden;
+}
+
+.lift-door-left,
+.lift-door-right {
+  position: absolute;
+  background-color: #eeeee4;
+  transition: transform 2.5s;
+  width: 50%;
+  height: 100%;
+  background-color: black;
+}
+
+.lift-door-left {
+  left: 0;
+}
+
+.lift-door-right {
+  right: 0;
+}
+
+.lift.open .lift-door-left {
+  transform: translateX(-50px);
+}
+
+.lift.open .lift-door-right {
+  transform: translateX(50px);
 }
 
 .lift-door-screen {
@@ -200,18 +227,6 @@ body {
   align-items: center;
   height: 100%;
   width: 100%;
-}
-
-.lift-door-left {
-  width: 50%;
-  height: 100%;
-  background-color: black;
-}
-
-.lift-door-right {
-  width: 50%;
-  height: 100%;
-  background-color: black;
 }
 
 .floor-number {

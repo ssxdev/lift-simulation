@@ -58,16 +58,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadLiftSimulation(totalFloors, totalLifts) {
   await loadHtml("lift-simulation.html", "main-content");
 
-  // Initialize lift system
-  const liftSystem = new LiftSystem(totalFloors, totalLifts);
-
   const liftSimulationPara = document.getElementById("lift-simulation-para");
   liftSimulationPara.textContent = `Lift Simulation with ${totalFloors} floors and ${totalLifts} lifts`;
 
-  const building = document.getElementById("building");
-
   // Create building
   generateBuilding(totalFloors, totalLifts);
+
+  // Initialize lift system
+  new LiftSystem(totalFloors, totalLifts);
 }
 
 function generateBuilding(totalFloors, totalLifts) {
@@ -86,18 +84,16 @@ function generateBuilding(totalFloors, totalLifts) {
           <div class="floor-lift-control-screen-text">${floor}</div>
           <div class="floor-lift-control-screen-down">v</div>
         </div>
-        <div class="floor-lift-control-button">
         ${
           floor !== totalFloors
-            ? `<button class="floor-lift-control-button-up" data-floor=${floor} data-direction="up">Up</button>`
+            ? `<button class="floor-lift-control-button" data-floor=${floor} data-direction="up">Up</button>`
             : ""
         }
         ${
           floor !== 0
-            ? `<button class="floor-lift-control-button-down" data-floor=${floor} data-direction="down">Down</button>`
+            ? `<button class="floor-lift-control-button" data-floor=${floor} data-direction="down">Down</button>`
             : ""
         }
-        </div>
       </div>`;
 
     floorDiv.innerHTML += floorControl;
@@ -106,12 +102,12 @@ function generateBuilding(totalFloors, totalLifts) {
     const floorLiftsDiv = document.createElement("div");
     floorLiftsDiv.className = "floor-lifts";
 
-    for (let lift = 0; lift < totalLifts; lift++) {
+    for (let lift = 1; lift <= totalLifts; lift++) {
       const floorLiftDiv = document.createElement("div");
       floorLiftDiv.className = "floor-lift";
       if (floor === 0) {
         floorLiftDiv.innerHTML = `
-        <div class="lift">
+        <div class="lift" id="lift-${lift}">
             <div class="lift-door-screen">
                 <div class="lift-door-screen-up">^</div>
                 <div class="lift-door-screen-text">0</div>
