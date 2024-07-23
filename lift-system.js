@@ -23,49 +23,78 @@ class LiftSystem {
 
   requestLift(floor, direction, button) {
     const lift = this.getAvailableLift(floor, direction);
-    lift.moveToFloor(floor, button);
+    lift.addRequest(floor, button);
   }
 
   getAvailableLift(floor, direction) {
-    const availableLift =
-      this.lifts.find((lift) => !lift.isMoving) || this.lifts[0];
+    const availableLift = this.lifts[0];
     return availableLift;
   }
 }
 
 class Lift {
+  floorHeight = 132;
+  currentFloor = 0;
+  queue = [];
+  isMoving = false;
+
   constructor(id) {
     this.id = id;
-    this.currentFloor = 0;
     this.element = document.getElementById(`lift-${id}`);
-    this.isMoving = false;
+    this.screen = this.element.getElementsByClassName(
+      "lift-door-screen-text"
+    )[0];
+    this.screen.innerHTML = this.currentFloor;
+    this.screenUp = this.element.getElementsByClassName(
+      "lift-door-screen-up"
+    )[0];
+    this.screenDown = this.element.getElementsByClassName(
+      "lift-door-screen-down"
+    )[0];
+  }
+
+  addRequest(floor, button) {
+    button.style.backgroundColor = "green";
+    button.disabled = true;
+    this.queue.push({ floor, button });
+    this.processQueue();
+  }
+
+  processQueue() {
+    if (this.isMoving || this.queue.length === 0) return;
+
+    const request = this.queue.shift();
+    this.moveToFloor(request.floor, request.button);
   }
 
   moveToFloor(floor, button) {
-    if (this.isMoving) return;
-
-    button.style.backgroundColor = "green";
-    button.disabled = true;
-
     this.isMoving = true;
-    const floorHeight = 132;
-    const floorsToMove = Math.abs(this.currentFloor - floor);
-    const transitionDuration = floorsToMove * 2; // 2 seconds per floor
-    const targetPosition = -floor * floorHeight;
-    this.element.style.transition = `transform ${transitionDuration}s linear`;
-    this.element.style.transform = `translateY(${targetPosition}px)`;
+    this.screen.innerHTML = floor;
+    this.screenUp.innerHTML = this.currentFloor < floor ? "▲" : "";
+    this.screenDown.innerHTML = this.currentFloor > floor ? "▼" : "";
+
+    const travelTime = Math.abs(this.currentFloor - floor) * 2;
+
+    this.element.style.transition = `transform ${travelTime}s linear`;
+    this.element.style.transform = `translateY(${-floor * this.floorHeight}px)`;
+
     setTimeout(() => {
       this.currentFloor = floor;
-      this.isMoving = false;
-
+      this.screenUp.innerHTML = "";
+      this.screenDown.innerHTML = "";
       this.openDoors();
+
       setTimeout(() => {
         this.closeDoors();
-        button.style.backgroundColor = "";
-        button.disabled = false;
-        setTimeout(() => {}, 2500);
+
+        setTimeout(() => {
+          button.style.backgroundColor = "";
+          button.disabled = false;
+          this.isMoving = false;
+          this.processQueue();
+        }, 2500);
       }, 2500);
-    }, transitionDuration * 1000);
+    }, travelTime * 1000);
   }
 
   openDoors() {

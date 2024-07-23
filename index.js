@@ -109,9 +109,9 @@ function generateBuilding(totalFloors, totalLifts) {
         floorLiftDiv.innerHTML = `
         <div class="lift" id="lift-${lift}">
             <div class="lift-door-screen">
-                <div class="lift-door-screen-up">^</div>
-                <div class="lift-door-screen-text">0</div>
-                <div class="lift-door-screen-down">v</div>
+                <div class="lift-door-screen-up"></div>
+                <div class="lift-door-screen-text"></div>
+                <div class="lift-door-screen-down"></div>
             </div>
             <div class="lift-door">
                 <div class="lift-door-left"></div>
