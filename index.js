@@ -47,12 +47,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("total-lifts-input").value
     );
 
-    if (totalFloors < 2) {
-      alert("Number of floors should greater than 1");
+    if (totalFloors < 2 && totalFloors > 50) {
+      alert("Number of floors should between 2 and 50");
       return;
     }
-    if (totalLifts < 1) {
-      alert("Number of lifts should be alteast 1");
+    if (totalLifts < 1 && totalFloors > 50) {
+      alert("Number of lifts should between 1 and 50");
       return;
     }
 
@@ -78,7 +78,7 @@ function generateBuilding(totalFloors, totalLifts) {
   const building = document.getElementById("building");
   building.innerHTML = "";
 
-  for (let floor = totalFloors; floor >= 0; floor--) {
+  for (let floor = totalFloors - 1; floor >= 0; floor--) {
     const floorDiv = document.createElement("div");
     floorDiv.className = "floor";
 
