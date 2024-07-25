@@ -36,6 +36,8 @@ body {
 #instructions-section h1 {
   margin: 1rem;
   text-decoration: underline;
+  width: 100%;
+  text-align: center;
 }
 
 #instructions-list {
