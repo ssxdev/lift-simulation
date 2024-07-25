@@ -47,16 +47,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("total-lifts-input").value
     );
 
-    if (totalFloors < 2 || totalFloors > 10) {
-      alert("Number of floors should be between 2 and 10");
+    if (totalFloors < 2) {
+      alert("Number of floors should greater than 1");
       return;
     }
-    if (totalLifts < 1 || totalLifts > 10) {
-      alert("Number of lifts should be between 1 and 10");
-      return;
-    }
-    if (totalLifts > totalFloors) {
-      alert("Why do you need more lifts than floors?");
+    if (totalLifts < 1) {
+      alert("Number of lifts should be alteast 1");
       return;
     }
 
@@ -85,6 +81,23 @@ function generateBuilding(totalFloors, totalLifts) {
   for (let floor = totalFloors; floor >= 0; floor--) {
     const floorDiv = document.createElement("div");
     floorDiv.className = "floor";
+
+    // Floor number
+    const floorNumberDiv = document.createElement("div");
+    floorNumberDiv.className = "floor-number";
+    if (floor === 0) {
+      floorNumberDiv.innerHTML = `0th Floor`;
+    } else if (floor === 1) {
+      floorNumberDiv.innerHTML = `${floor}st Floor`;
+    } else if (floor === 2) {
+      floorNumberDiv.innerHTML = `${floor}nd Floor`;
+    } else if (floor === 3) {
+      floorNumberDiv.innerHTML = `${floor}rd Floor`;
+    } else {
+      floorNumberDiv.innerHTML = `${floor}th Floor`;
+    }
+
+    floorDiv.appendChild(floorNumberDiv);
 
     // Floor control system
     const floorControl = `
@@ -134,23 +147,6 @@ function generateBuilding(totalFloors, totalLifts) {
     }
 
     floorDiv.appendChild(floorLiftsDiv);
-
-    // Floor number
-    const floorNumberDiv = document.createElement("div");
-    floorNumberDiv.className = "floor-number";
-    if (floor === 0) {
-      floorNumberDiv.innerHTML = `<div>Ground Floor</div>`;
-    } else if (floor === 1) {
-      floorNumberDiv.innerHTML = `<div>${floor}st Floor</div>`;
-    } else if (floor === 2) {
-      floorNumberDiv.innerHTML = `<div>${floor}nd Floor</div>`;
-    } else if (floor === 3) {
-      floorNumberDiv.innerHTML = `<div>${floor}rd Floor</div>`;
-    } else {
-      floorNumberDiv.innerHTML = `<div>${floor}th Floor</div>`;
-    }
-
-    floorDiv.appendChild(floorNumberDiv);
 
     // Append floor to building
     building.appendChild(floorDiv);

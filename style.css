@@ -8,6 +8,7 @@ body {
   padding: 0;
   background-color: #e2e8f0;
   min-height: 100vh;
+  display: flex;
 }
 
 .container {
@@ -25,6 +26,7 @@ body {
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #e2e8f0;
+  max-width: 90%;
 }
 
 /* instructions.html */
@@ -88,23 +90,38 @@ body {
 #lift-simulation-section {
   font-size: 1.5rem;
   color: #212121;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  text-align: center;
 }
 
 #lift-simulation-section h1 {
   margin: 1rem;
   text-decoration: underline;
+  margin: 0 auto;
+}
+
+#lift-simulation-para {
+  margin: 0 auto;
 }
 
 #building {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   background-color: #7e6a5f;
   color: white;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  padding: 20px;
+  padding: 20px 0;
+  position: relative;
+  overflow-x: scroll;
+  width: 100%;
 }
 
 .floor {
@@ -168,7 +185,6 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   padding: 5px;
   gap: 10px;
 }
@@ -250,11 +266,13 @@ body {
 }
 
 .floor-number {
-  width: 5rem;
   background-color: gold;
   color: black;
   text-align: center;
+  justify-content: center;
   border-radius: 5px;
   border: 2px solid black;
-  padding: 5px;
+  padding: 20px 10px;
+  overflow: visible;
+  width: 100%;
 }
