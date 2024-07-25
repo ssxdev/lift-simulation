@@ -27,12 +27,19 @@ class LiftSystem {
   }
 
   getNearestLift(floor) {
-    let nearestLift = this.lifts.find((lift) => !lift.isMoving);
+    let nearestLift = null;
+    let minDistance = Infinity;
+    this.lifts.forEach((lift) => {
+      const distance = lift.getDistance(floor);
+      if (distance < minDistance) {
+        nearestLift = lift;
+        minDistance = distance;
+      }
+    });
 
     if (!nearestLift) {
-      let minDistance = Infinity;
       this.lifts.forEach((lift) => {
-        const distance = lift.getDistance(floor);
+        const distance = lift.getDistance(floor, false);
         if (distance < minDistance) {
           nearestLift = lift;
           minDistance = distance;
@@ -149,9 +156,10 @@ class Lift {
     this.element.classList.remove("open");
   }
 
-  getDistance(floor) {
+  getDistance(floor, idle = true) {
+    if (idle && this.isMoving) return Infinity;
     if (this.isMoving) {
-      const lastFloorInQueue = this.queue[this.queue.length - 1].floor;
+      const lastFloorInQueue = this.queue[0].floor;
       return Math.abs(lastFloorInQueue - floor);
     }
     return Math.abs(this.currentFloor - floor);
