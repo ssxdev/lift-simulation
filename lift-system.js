@@ -16,19 +16,31 @@ class LiftSystem {
       button.addEventListener("click", () => {
         const floor = parseInt(button.dataset.floor);
         const direction = button.dataset.direction;
-        this.requestLift(floor, direction, button);
+        this.requestLift(floor, button);
       });
     });
   }
 
-  requestLift(floor, direction, button) {
-    const lift = this.getAvailableLift(floor, direction);
+  requestLift(floor, button) {
+    const lift = this.getNearestLift(floor);
     lift.addRequest(floor, button);
   }
 
-  getAvailableLift(floor, direction) {
-    const availableLift = this.lifts[0];
-    return availableLift;
+  getNearestLift(floor) {
+    let nearestLift = this.lifts.find((lift) => !lift.isMoving);
+
+    if (!nearestLift) {
+      let minDistance = Infinity;
+      this.lifts.forEach((lift) => {
+        const distance = lift.getDistance(floor);
+        if (distance < minDistance) {
+          nearestLift = lift;
+          minDistance = distance;
+        }
+      });
+    }
+
+    return nearestLift;
   }
 }
 
@@ -70,7 +82,7 @@ class Lift {
   processQueue() {
     if (this.isMoving || this.queue.length === 0) return;
 
-    const request = this.queue.shift();
+    const request = this.queue[0];
     this.moveToFloor(request.floor, request.button);
   }
 
@@ -105,6 +117,7 @@ class Lift {
       setTimeout(() => {
         button.style.backgroundColor = "";
         button.disabled = false;
+        this.queue.shift();
         this.isMoving = false;
         this.direction = "";
         this.updateFloorScreenStatus();
@@ -134,6 +147,14 @@ class Lift {
 
   closeDoors() {
     this.element.classList.remove("open");
+  }
+
+  getDistance(floor) {
+    if (this.isMoving) {
+      const lastFloorInQueue = this.queue[this.queue.length - 1].floor;
+      return Math.abs(lastFloorInQueue - floor);
+    }
+    return Math.abs(this.currentFloor - floor);
   }
 }
 
