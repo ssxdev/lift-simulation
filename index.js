@@ -79,19 +79,20 @@ function generateBuilding(totalFloors, totalLifts) {
     // Floor control system
     const floorControl = `
       <div class="floor-lift-control">
-        <div class="floor-lift-control-screen">
-          <div class="floor-lift-control-screen-up">^</div>
-          <div class="floor-lift-control-screen-text">${floor}</div>
-          <div class="floor-lift-control-screen-down">v</div>
-        </div>
         ${
           floor !== totalFloors
-            ? `<button class="floor-lift-control-button" data-floor=${floor} data-direction="up">Up</button>`
+            ? ` <div class="floor-lift-control-up">
+                  <div class="floor-lift-control-screen"></div>
+                  <button class="floor-lift-control-button" data-floor=${floor} data-direction="up">Up</button>
+                </div>`
             : ""
         }
         ${
           floor !== 0
-            ? `<button class="floor-lift-control-button" data-floor=${floor} data-direction="down">Down</button>`
+            ? ` <div class="floor-lift-control-down">
+                  <div class="floor-lift-control-screen"></div>
+                  <button class="floor-lift-control-button" data-floor=${floor} data-direction="down">Down</button>
+                </div>`
             : ""
         }
       </div>`;
