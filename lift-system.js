@@ -52,9 +52,9 @@ class LiftSystem {
 }
 
 class Lift {
-  floorHeight = 132;
+  floorHeight = 131.6;
   currentFloor = 0;
-  direction = "";
+  targetFloor = 0;
   queue = [];
   floorScreens = [];
   isMoving = false;
@@ -83,6 +83,7 @@ class Lift {
         "floor-lift-control-screen"
       )[0]
     );
+    this.updateScreenStatus();
     this.processQueue();
   }
 
@@ -95,27 +96,21 @@ class Lift {
 
   async moveToFloor(targetFloor, button) {
     this.isMoving = true;
-    this.screen.innerHTML = targetFloor;
-    this.direction = targetFloor > this.currentFloor ? "▲" : "▼";
-    this.screenUp.innerHTML = this.direction === "▲" ? "▲" : "";
-    this.screenDown.innerHTML = this.direction === "▼" ? "▼" : "";
+    this.targetFloor = targetFloor;
 
-    this.updateFloorScreenStatus();
-
-    while (this.currentFloor !== targetFloor) {
-      if (this.direction === "▲") {
-        this.currentFloor++;
-      } else {
-        this.currentFloor--;
-      }
-      this.updatePosition();
-      this.updateFloorScreenStatus();
+    while (this.currentFloor !== this.targetFloor) {
+      const nextFloor =
+        this.currentFloor < this.targetFloor
+          ? this.currentFloor + 1
+          : this.currentFloor - 1;
+      this.updatePosition(nextFloor);
+      this.updateScreenStatus();
       await new Promise((r) => setTimeout(r, 2000));
+      this.currentFloor = nextFloor;
     }
 
-    this.screenUp.innerHTML = "";
-    this.screenDown.innerHTML = "";
-    this.floorScreens[0].innerHTML = this.currentFloor;
+    this.updateScreenStatus();
+
     this.openDoors();
 
     setTimeout(() => {
@@ -126,25 +121,33 @@ class Lift {
         button.disabled = false;
         this.queue.shift();
         this.isMoving = false;
-        this.direction = "";
-        this.updateFloorScreenStatus();
+        this.floorScreens[0].innerHTML = "";
         this.floorScreens.shift();
         this.processQueue();
       }, 2500);
     }, 2500);
   }
 
-  updatePosition() {
+  updatePosition(nextFloor) {
     this.element.style.transform = `translateY(${
-      -this.currentFloor * this.floorHeight
+      -nextFloor * this.floorHeight
     }px)`;
   }
 
-  updateFloorScreenStatus() {
+  updateScreenStatus() {
+    let direction = "";
+    for (const request of this.queue) {
+      if (request.floor === this.currentFloor) {
+        continue;
+      }
+      direction = request.floor > this.currentFloor ? "▲" : "▼";
+      break;
+    }
+    this.screen.innerHTML = this.targetFloor;
+    this.screenUp.innerHTML = direction === "▲" ? "▲" : "";
+    this.screenDown.innerHTML = direction === "▼" ? "▼" : "";
     for (const floorScreen of this.floorScreens) {
-      if (this.direction)
-        floorScreen.innerHTML = `${this.direction} ${this.currentFloor}`;
-      else floorScreen.innerHTML = "";
+      floorScreen.innerHTML = this.currentFloor + " " + direction;
     }
   }
 
