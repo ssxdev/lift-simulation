@@ -41,7 +41,7 @@ class LiftSystem {
 }
 
 class Lift {
-  floorHeight = 131.6;
+  floorHeight = 140;
   currentFloor = 0;
   targetFloor = 0;
   queue = [];
