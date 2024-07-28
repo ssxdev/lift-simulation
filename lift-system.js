@@ -28,25 +28,14 @@ class LiftSystem {
 
   getNearestLift(floor) {
     let nearestLift = null;
-    let minDistance = Infinity;
-    this.lifts.forEach((lift) => {
-      const distance = lift.getDistance(floor);
-      if (distance < minDistance) {
+    let minTime = Infinity;
+    for (const lift of this.lifts) {
+      const time = lift.getTimeToReach(floor);
+      if (time < minTime) {
         nearestLift = lift;
-        minDistance = distance;
+        minTime = time;
       }
-    });
-
-    if (!nearestLift) {
-      this.lifts.forEach((lift) => {
-        const distance = lift.getDistance(floor, false);
-        if (distance < minDistance) {
-          nearestLift = lift;
-          minDistance = distance;
-        }
-      });
     }
-
     return nearestLift;
   }
 }
@@ -58,6 +47,8 @@ class Lift {
   queue = [];
   floorScreens = [];
   isMoving = false;
+  LiftMoveTime = 2;
+  LiftDoorMoveTime = 2.5;
 
   constructor(id) {
     this.id = id;
@@ -105,7 +96,7 @@ class Lift {
           : this.currentFloor - 1;
       this.updatePosition(nextFloor);
       this.updateScreenStatus();
-      await new Promise((r) => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, this.LiftMoveTime * 1000));
       this.currentFloor = nextFloor;
     }
 
@@ -124,8 +115,8 @@ class Lift {
         this.floorScreens[0].innerHTML = "";
         this.floorScreens.shift();
         this.processQueue();
-      }, 2500);
-    }, 2500);
+      }, this.LiftDoorMoveTime * 1000);
+    }, this.LiftDoorMoveTime * 1000);
   }
 
   updatePosition(nextFloor) {
@@ -159,13 +150,14 @@ class Lift {
     this.element.classList.remove("open");
   }
 
-  getDistance(floor, idle = true) {
-    if (idle && this.isMoving) return Infinity;
-    if (this.isMoving) {
-      const lastFloorInQueue = this.queue[0].floor;
-      return Math.abs(lastFloorInQueue - floor);
+  getTimeToReach(floor) {
+    let time = 0;
+    for (const request of this.queue) {
+      time += Math.abs(request.floor - this.currentFloor) * this.LiftMoveTime;
+      time += 2 * this.LiftDoorMoveTime;
     }
-    return Math.abs(this.currentFloor - floor);
+    time += Math.abs(floor - this.currentFloor) * this.LiftMoveTime;
+    return time;
   }
 }
 
