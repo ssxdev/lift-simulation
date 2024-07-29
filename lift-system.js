@@ -152,11 +152,13 @@ class Lift {
 
   getTimeToReach(floor) {
     let time = 0;
+    let currentLiftFloor = this.currentFloor;
     for (const request of this.queue) {
-      time += Math.abs(request.floor - this.currentFloor) * this.LiftMoveTime;
+      time += Math.abs(currentLiftFloor - request.floor) * this.LiftMoveTime;
+      currentLiftFloor = request.floor;
       time += 2 * this.LiftDoorMoveTime;
     }
-    time += Math.abs(floor - this.currentFloor) * this.LiftMoveTime;
+    time += Math.abs(currentLiftFloor - floor) * this.LiftMoveTime;
     return time;
   }
 }
